@@ -33,18 +33,22 @@ public class User {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isDeleted;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
-    private Boolean isAutoLogin;
 
     @Builder
-    public User(Integer id, String username, String password, String email, LocalDateTime createdAt, Boolean isDeleted, Boolean isAutoLogin) {
+    public User(Integer id, String username, String password, String email, LocalDateTime createdAt, Boolean isDeleted) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
-        this.isAutoLogin = isAutoLogin;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if(isDeleted==null){
+            isDeleted=false;
+        }
     }
 
     public void updatePassword(String password){

@@ -2,39 +2,27 @@ package com.metacoding.planitapiserver.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.time.format.DateTimeFormatter;
-
 public class UserResponse {
 
-    public record DTO(Integer id, String username, String imgUrl) {
+    /* record >> java 16부터 정식 기능으로 출시된 새로운 클래스 타입
+       final이 자동으로 선언되고 lombok의 @AllArgsConstructor와 @Data 처럼 생성자와 여러 기능이 자동으로 추가됨
+     */
+    public record DTO(Integer id, String username) {
         public DTO(User user) {
-            this(user.getId(), user.getUsername(), user.getImgUrl());
-        }
-    }
-
-    public record DetailDTO(Integer id, String username, String email, String imgUrl, String createdAt, String updatedAt) {
-        public DetailDTO(User user) {
-            this(
-                    user.getId(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getImgUrl(),
-                    user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    user.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
-            );
+            this(user.getId(), user.getUsername());
         }
     }
 
     // jwt는 service -> controller 넘어갈 때만 사용
-    record LoginDTO(@JsonIgnore String accessToken, Integer id, String username, String imgUrl) {
+    record LoginDTO(@JsonIgnore String accessToken, Integer id, String username) {
         LoginDTO(String accessToken, User user) {
-            this(accessToken, user.getId(), user.getUsername(), user.getImgUrl());
+            this(accessToken, user.getId(), user.getUsername());
         }
     }
 
-    record AutoLoginDTO(Integer id, String username, String imgUrl) {
+    record AutoLoginDTO(Integer id, String username) {
         AutoLoginDTO(User user) {
-            this(user.getId(), user.getUsername(), user.getImgUrl());
+            this(user.getId(), user.getUsername());
         }
     }
 }

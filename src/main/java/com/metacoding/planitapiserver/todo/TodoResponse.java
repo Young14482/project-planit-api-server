@@ -1,51 +1,34 @@
 package com.metacoding.planitapiserver.todo;
 
 import com.metacoding.planitapiserver.user.UserResponse;
-import org.springframework.data.domain.Page;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class TodoResponse {
-    public record DTO(Integer id, String title, String content, String createdAt, String updatedAt,
-                      UserResponse.DTO user, int bookmarkCount) {
-        public DTO(ToDo post) {
+    public record DTO(Integer id, String title, String content, String createdAt,
+                      UserResponse.DTO user) {
+        public DTO(ToDo toDo) {
             this(
-                    post.getId(),
-                    post.getTitle(),
-                    post.getContent(),
-                    post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    new UserResponse.DTO(post.getUser()),
-                    post.getBookmarks().size()
+                    toDo.getId(),
+                    toDo.getTitle(),
+                    toDo.getContent(),
+                    toDo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                    new UserResponse.DTO(toDo.getUser())
             );
         }
     }
 
-    public record DetailDTO(Integer id, String title, String content, String createdAt, String updatedAt,
-                            int bookmarkCount, boolean isBookmark,
-                            UserResponse.DTO user, List<ReplyResponse.DTO> replies) {
-        public DetailDTO(ToDo post, List<Reply> replies, int sessionUserId) {
+    public record DetailDTO(Integer id, String title, String content, String createdAt,
+                            UserResponse.DTO user) {
+        public DetailDTO(ToDo toDo,  int sessionUserId) {
             this(
-                    post.getId(),
-                    post.getTitle(),
-                    post.getContent(),
-                    post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    post.getBookmarks().size(),
-                    post.getBookmarks().stream().anyMatch(bookmark -> bookmark.getUser().getId() == sessionUserId),
-                    new UserResponse.DTO(post.getUser()),
-                    replies.stream().map(ReplyResponse.DTO::new).toList()
+                    toDo.getId(),
+                    toDo.getTitle(),
+                    toDo.getContent(),
+                    toDo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                    new UserResponse.DTO(toDo.getUser())
             );
         }
 
-    }
-
-
-    public record PageDTO(boolean isFirst, boolean isLast, int pageNumber, int size, int totalPage, List<DTO> posts) {
-        PageDTO(Page<ToDo> postPG) {
-            this(postPG.isFirst(), postPG.isLast(), postPG.getNumber(), postPG.getSize(), postPG.getTotalPages(),
-                    postPG.getContent().stream().map(DTO::new).toList());
-        }
     }
 }

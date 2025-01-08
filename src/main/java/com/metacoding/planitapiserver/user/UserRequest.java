@@ -9,9 +9,8 @@ public class UserRequest {
         private String username;
         private String password;
         private String email;
-        private String imgBase64;
 
-        User toEntity(String encPassword, String imgUrl) {
+        User toEntity(String encPassword) {
             return User.builder()
                     .username(username)
                     .password(encPassword)
@@ -31,8 +30,4 @@ public class UserRequest {
         private String password;
     }
 
-    @Data
-    public static class ImgBase64UpdateDTO {
-        private String imgBase64;
-    }
 }
