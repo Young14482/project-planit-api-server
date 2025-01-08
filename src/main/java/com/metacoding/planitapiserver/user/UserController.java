@@ -61,4 +61,6 @@ public class UserController {
         return ResponseEntity.ok(ApiUtil.success(null));
     }
 
+    // TODO 아이디찾기 get
+    //  비밀번호 찾기 put >> 확인 후 임시비번 던져주기
 }

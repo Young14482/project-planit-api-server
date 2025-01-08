@@ -1,5 +1,6 @@
 package com.metacoding.planitapiserver.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false, unique = true)
@@ -30,7 +32,7 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(nullable = false)
     private Boolean isDeleted;
 
 

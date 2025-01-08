@@ -7,26 +7,26 @@ import java.time.format.DateTimeFormatter;
 public class TodoResponse {
     public record DTO(Integer id, String title, String content, String createdAt,
                       UserResponse.DTO user) {
-        public DTO(ToDo toDo) {
+        public DTO(ToDo todo) {
             this(
-                    toDo.getId(),
-                    toDo.getTitle(),
-                    toDo.getContent(),
-                    toDo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    new UserResponse.DTO(toDo.getUser())
+                    todo.getId(),
+                    todo.getTitle(),
+                    todo.getMemo(),
+                    todo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                    new UserResponse.DTO(todo.getUser())
             );
         }
     }
 
     public record DetailDTO(Integer id, String title, String content, String createdAt,
                             UserResponse.DTO user) {
-        public DetailDTO(ToDo toDo,  int sessionUserId) {
+        public DetailDTO(ToDo todo,  int sessionUserId) {
             this(
-                    toDo.getId(),
-                    toDo.getTitle(),
-                    toDo.getContent(),
-                    toDo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    new UserResponse.DTO(toDo.getUser())
+                    todo.getId(),
+                    todo.getTitle(),
+                    todo.getMemo(),
+                    todo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                    new UserResponse.DTO(todo.getUser())
             );
         }
 
