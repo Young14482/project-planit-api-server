@@ -3,7 +3,6 @@ package com.metacoding.planitapiserver._core.auth;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class PasswordUtil {
-
     public static String encode(String rawPassword){
         return BCrypt.hashpw(rawPassword, BCrypt.gensalt());
     }

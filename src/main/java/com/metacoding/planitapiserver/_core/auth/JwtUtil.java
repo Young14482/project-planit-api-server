@@ -15,14 +15,12 @@ public class JwtUtil {
     //public final static Long EXPIRATION_TIME = 1000L;
     //public final static Long EXPIRATION_REFRESH_TIME = 1000L;
     public final static Long EXPIRATION_TIME = 1000*60*60*24*2L;
-    public final static Long EXPIRATION_REFRESH_TIME = 1000*60*60*24*14L;
 
     private static String create(User user, Long expirationTime) {
         String jwt = JWT.create()
                 .withSubject("metacoding")
                 .withClaim("id", user.getId())
                 .withClaim("username", user.getUsername())
-                .withClaim("imgUrl", user.getImgUrl())
                 .withExpiresAt(Instant.now().plusMillis(expirationTime))
                 .sign(Algorithm.HMAC512("metacoding"));
         return jwt;
@@ -42,8 +40,7 @@ public class JwtUtil {
 
         int id = decodedJWT.getClaim("id").asInt();
         String username = decodedJWT.getClaim("username").asString();
-        String imgUrl = decodedJWT.getClaim("imgUrl").asString();
 
-        return User.builder().id(id).username(username).imgUrl(imgUrl).build();
+        return User.builder().id(id).username(username).build();
     }
 }
