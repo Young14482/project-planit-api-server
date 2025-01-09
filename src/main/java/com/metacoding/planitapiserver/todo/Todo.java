@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metacoding.planitapiserver.category.Category;
 import com.metacoding.planitapiserver.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
@@ -103,6 +102,9 @@ public class Todo {
             this.category = Category.builder().id(dto.getCategory()).build();
         if (dto.getDueDate() != null)
             this.dueDate = dto.getDueDate();
+    }
+    public void clearCategory() {
+        this.category = null;
     }
 
     public void delete() {
