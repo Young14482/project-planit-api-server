@@ -14,3 +14,9 @@ VALUES
     ('Task 8', 1, 'Memo for Task 8', DATEADD(DAY, 8, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, '매월', false, false),
     ('Task 9', 1, 'Memo for Task 9', DATEADD(DAY, 9, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, '매년', false, false),
     ('Task 10', 1, 'Memo for Task 10', DATEADD(DAY, 30, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, '없음', false, false);
+
+INSERT INTO category_tb (name, user_id)
+VALUES
+    ('작업',1),
+    ('생일',1),
+    ('공부',1);
