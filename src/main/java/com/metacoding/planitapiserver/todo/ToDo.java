@@ -1,6 +1,7 @@
 package com.metacoding.planitapiserver.todo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.metacoding.planitapiserver.category.Category;
 import com.metacoding.planitapiserver.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -29,10 +30,11 @@ public class ToDo {
     @JsonIgnore
     private User user;
 
-    @Column()
-    private String category;
+    @OneToOne
+    @JoinColumn
+    private Category category;
 
-    @Column()
+    @Lob
     private String memo;
 
     @Column(nullable = false)
@@ -54,7 +56,7 @@ public class ToDo {
     private Boolean isDeleted;
 
     @Builder
-    public ToDo(Integer id, String title, User user, String category, String memo, LocalDate dueDate, LocalDateTime createdAt, String repeat, Boolean isCompleted, Boolean isDeleted) {
+    public ToDo(Integer id, String title, User user, Category category, String memo, LocalDate dueDate, LocalDateTime createdAt, String repeat, Boolean isCompleted, Boolean isDeleted) {
         this.id = id;
         this.title = title;
         this.user = user;
