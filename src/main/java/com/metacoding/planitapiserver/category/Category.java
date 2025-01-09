@@ -29,4 +29,8 @@ public class Category {
         this.name = name;
         this.user = user;
     }
+
+    public void update(CategoryRequest.updateDTO requestDTO) {
+        this.name = requestDTO.getName();
+    }
 }
