@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metacoding.planitapiserver.category.Category;
 import com.metacoding.planitapiserver.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "todo_tb")
-public class ToDo {
+public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -30,11 +31,12 @@ public class ToDo {
     @JsonIgnore
     private User user;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Category category;
 
     @Lob
+    @Column(nullable = false)
     private String memo;
 
     @Column(nullable = false)
@@ -56,7 +58,7 @@ public class ToDo {
     private Boolean isDeleted;
 
     @Builder
-    public ToDo(Integer id, String title, User user, Category category, String memo, LocalDate dueDate, LocalDateTime createdAt, String repeat, Boolean isCompleted, Boolean isDeleted) {
+    public Todo(Integer id, String title, User user, Category category, String memo, LocalDate dueDate, LocalDateTime createdAt, String repeat, Boolean isCompleted, Boolean isDeleted) {
         this.id = id;
         this.title = title;
         this.user = user;
@@ -71,17 +73,40 @@ public class ToDo {
 
     @PrePersist
     public void prePersist() {
-        if(isCompleted==null){
-            isCompleted=false;
+        if (isCompleted == null) {
+            isCompleted = false;
         }
 
-        if(isDeleted==null){
-            isDeleted=false;
+        if (isDeleted == null) {
+            isDeleted = false;
         }
 
-        if(repeat==null){
-            repeat="없음";
+        if (title == null) {
+            title = "제목없음";
         }
+
+        if (memo == null) {
+            memo = "";
+        }
+
+        if (repeat == null) {
+            repeat = "없음";
+        }
+    }
+
+    public void update(TodoRequest.UpdateDTO dto) {
+        if (dto.getTitle() != null)
+            this.title = dto.getTitle();
+        if (dto.getMemo() != null)
+            this.memo = dto.getMemo();
+        if (dto.getCategory() != null)
+            this.category = Category.builder().id(dto.getCategory()).build();
+        if (dto.getDueDate() != null)
+            this.dueDate = dto.getDueDate();
+    }
+
+    public void delete() {
+        isDeleted = true;
     }
 
 }

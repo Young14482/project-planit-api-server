@@ -1,34 +1,46 @@
 package com.metacoding.planitapiserver.todo;
 
-import com.metacoding.planitapiserver.user.UserResponse;
+import com.metacoding.planitapiserver.category.Category;
+import com.metacoding.planitapiserver.category.CategoryResponse;
+import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class TodoResponse {
-    public record DTO(Integer id, String title, String content, String createdAt,
-                      UserResponse.DTO user) {
-        public DTO(ToDo todo) {
+    public record DTO(Integer id, String title, String content, String dueDate, String createdAt, String repeat,
+                      boolean isCompleted) {
+        public DTO(Todo todo) {
             this(
                     todo.getId(),
                     todo.getTitle(),
                     todo.getMemo(),
+                    todo.getDueDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                     todo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    new UserResponse.DTO(todo.getUser())
+                    todo.getRepeat(),
+                    todo.getIsCompleted()
             );
         }
     }
 
-    public record DetailDTO(Integer id, String title, String content, String createdAt,
-                            UserResponse.DTO user) {
-        public DetailDTO(ToDo todo,  int sessionUserId) {
-            this(
-                    todo.getId(),
-                    todo.getTitle(),
-                    todo.getMemo(),
-                    todo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    new UserResponse.DTO(todo.getUser())
-            );
-        }
 
+    @Data
+    public static class FindAllWithCategoryDTO {
+        private List<CategoryResponse.DTO> categories;
+        private List<DTO> todos;
+
+        public FindAllWithCategoryDTO(List<Category> categories, List<Todo> todos) {
+            this.categories = categories.stream().map(CategoryResponse.DTO::new).toList();
+            this.todos = todos.stream().map(DTO::new).toList();
+        }
+    }
+
+    @Data
+    public static class FindAllDTO {
+        private List<DTO> todos;
+
+        public FindAllDTO(List<Todo> todos) {
+            this.todos = todos.stream().map(DTO::new).toList();
+        }
     }
 }
