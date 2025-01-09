@@ -1,7 +1,8 @@
 package com.metacoding.planitapiserver.category;
 
 import com.metacoding.planitapiserver._core.error.exception.Exception404;
-import com.metacoding.planitapiserver.todo.TodoService;
+import com.metacoding.planitapiserver.todo.Todo;
+import com.metacoding.planitapiserver.todo.TodoRepository;
 import com.metacoding.planitapiserver.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,9 @@ import java.util.List;
 @Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-    private final TodoService todoService;
+    private final TodoRepository todoRepository;
 
-    public CategoryResponse.DTOList findCategory(Integer userId) {
+    public CategoryResponse.DTOList find(Integer userId) {
         List<Category> allByUserId = categoryRepository.findAllByUserId(userId);
         CategoryResponse.DTOList dtoList = new CategoryResponse.DTOList(allByUserId);
         return dtoList;
@@ -29,14 +30,17 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryResponse.DTO updateCategory(Integer categoryId, CategoryRequest.updateDTO requestDTO) {
+    public CategoryResponse.DTO update(Integer categoryId, CategoryRequest.updateDTO requestDTO) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다."));
         category.update(requestDTO);
         return new CategoryResponse.DTO(category);
     }
 
-    public void delete(Integer categoryId) {
-
+    @Transactional
+    public void delete(Integer userId,Integer categoryId) {
+        List<Todo> allByUserIdAndCategoryId = todoRepository.findAllByUserIdAndCategoryId(userId, categoryId);
+        allByUserIdAndCategoryId.forEach(Todo::clearCategory);
+        categoryRepository.deleteById(categoryId);
     }
 
 
