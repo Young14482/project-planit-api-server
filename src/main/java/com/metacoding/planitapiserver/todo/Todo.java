@@ -93,16 +93,17 @@ public class Todo {
         }
     }
 
-    public void update(TodoRequest.UpdateDTO dto) {
+    public void update(TodoRequest.UpdateDTO dto, String categoryName) {
         if (dto.getTitle() != null)
             this.title = dto.getTitle();
         if (dto.getMemo() != null)
             this.memo = dto.getMemo();
         if (dto.getCategory() != null)
-            this.category = Category.builder().id(dto.getCategory()).build();
+            this.category = Category.builder().id(dto.getCategory()).name(categoryName).build();
         if (dto.getDueDate() != null)
             this.dueDate = dto.getDueDate();
     }
+
     public void clearCategory() {
         this.category = null;
     }

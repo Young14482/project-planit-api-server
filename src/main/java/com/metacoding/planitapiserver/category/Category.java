@@ -20,7 +20,6 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    // TODO 나중에 요청에 따라 걸러야함
     private User user;
 
     @Builder

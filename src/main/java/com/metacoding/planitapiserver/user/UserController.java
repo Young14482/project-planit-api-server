@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 public class UserController {
     private final UserService userService;
-    // TODO 골조만 만든상태 컨트롤러 구현 해야함
 
     @PostMapping("/auto/login")
     public ResponseEntity<?> autoLogin(HttpServletRequest request) {

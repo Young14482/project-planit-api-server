@@ -2,6 +2,7 @@ package com.metacoding.planitapiserver.todo;
 
 import com.metacoding.planitapiserver._core.error.exception.Exception404;
 import com.metacoding.planitapiserver.category.Category;
+import com.metacoding.planitapiserver.category.CategoryRepository;
 import com.metacoding.planitapiserver.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,10 @@ import java.util.List;
 @Service
 public class TodoService {
     private final TodoRepository todoRepository;
+    private final CategoryRepository categoryRepository;
 
     public TodoResponse.FindAllWithCategoryDTO findAllWithCategory(User sessionUser) {
-        List<Category> categories = List.of(
-                new Category(1, "작업", sessionUser),
-                new Category(2, "생일", sessionUser),
-                new Category(3, "공부", sessionUser)
-        ); // TODO : category 완성 시 수정
+        List<Category> categories = categoryRepository.findAllByUserId(sessionUser.getId());
         List<Todo> todos = todoRepository.findAllByUserId(sessionUser.getId());
         return new TodoResponse.FindAllWithCategoryDTO(categories, todos);
     }
@@ -36,7 +34,7 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponse.DTO save( User sessionUser) {
+    public TodoResponse.DTO save(User sessionUser) {
         Todo todo = Todo.builder().user(sessionUser).build();
         todoRepository.save(todo);
         return new TodoResponse.DTO(todo);
@@ -45,7 +43,12 @@ public class TodoService {
     @Transactional
     public TodoResponse.DTO update(Integer todoId, TodoRequest.UpdateDTO requestDTO) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new Exception404("투두를 찾을 수 없습니다."));
-        todo.update(requestDTO);
+        String categoryName = null;
+        if (requestDTO.getCategory() != null) {
+            Category category = categoryRepository.findById(requestDTO.getCategory()).orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다."));
+            categoryName = category.getName();
+        }
+        todo.update(requestDTO, categoryName);
         return new TodoResponse.DTO(todo);
     }
 
