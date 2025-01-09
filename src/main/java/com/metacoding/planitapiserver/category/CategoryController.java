@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CategoryController {
     private final CategoryService categoryService;
-    // TODO 골조만 만든상태 컨트롤러 구현 해야함
 
     @GetMapping("/api/category")
     public ResponseEntity<?> findAll(@SessionUser User sessionUser) {

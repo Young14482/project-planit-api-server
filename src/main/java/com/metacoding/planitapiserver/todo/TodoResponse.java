@@ -8,12 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TodoResponse {
-    public record DTO(Integer id, String title, String content, String dueDate, String createdAt, String repeat,
+    public record DTO(Integer id, String title, CategoryResponse.DTO category, String memo, String dueDate,
+                      String createdAt, String repeat,
                       boolean isCompleted) {
         public DTO(Todo todo) {
             this(
                     todo.getId(),
                     todo.getTitle(),
+                    todo.getCategory() == null ? null : new CategoryResponse.DTO(todo.getCategory()),
                     todo.getMemo(),
                     todo.getDueDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                     todo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),

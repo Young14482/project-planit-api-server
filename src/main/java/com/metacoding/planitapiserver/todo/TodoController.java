@@ -1,6 +1,8 @@
 package com.metacoding.planitapiserver.todo;
 
+import com.metacoding.planitapiserver._core.auth.SessionUser;
 import com.metacoding.planitapiserver._core.util.ApiUtil;
+import com.metacoding.planitapiserver.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +12,15 @@ import org.springframework.web.bind.annotation.*;
 public class TodoController {
     private final TodoService todoService;
 
-    @GetMapping("/api/todo/all")
-    public ResponseEntity<?> findAllWithCategory(@RequestParam("user-id") Integer userId) {
-        TodoResponse.FindAllWithCategoryDTO responseDTO = todoService.findAllWithCategory(userId);
+    @GetMapping("/api/todo-category")
+    public ResponseEntity<?> findAllWithCategory(@SessionUser User sessionUser) {
+        TodoResponse.FindAllWithCategoryDTO responseDTO = todoService.findAllWithCategory(sessionUser);
         return ResponseEntity.ok(ApiUtil.success(responseDTO));
     }
 
     @GetMapping("/api/todo")
-    public ResponseEntity<?> findAll(@RequestParam("user-id") Integer userId) {
-        TodoResponse.FindAllDTO responseDTO = todoService.findAll(userId);
+    public ResponseEntity<?> findAll(@SessionUser User sessionUser) {
+        TodoResponse.FindAllDTO responseDTO = todoService.findAll(sessionUser);
         return ResponseEntity.ok(ApiUtil.success(responseDTO));
     }
 
@@ -29,8 +31,8 @@ public class TodoController {
     }
 
     @PostMapping("/api/todo")
-    public ResponseEntity<?> save(@RequestParam("user-id") Integer userId) {
-        TodoResponse.DTO responseDTO = todoService.save(userId);
+    public ResponseEntity<?> save(@SessionUser User sessionUser) {
+        TodoResponse.DTO responseDTO = todoService.save(sessionUser);
         return ResponseEntity.ok(ApiUtil.success(responseDTO));
     }
 

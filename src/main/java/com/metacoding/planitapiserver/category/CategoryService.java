@@ -43,6 +43,4 @@ public class CategoryService {
         categoryRepository.deleteById(categoryId);
     }
 
-
-    // TODO 카테고리 삭제시 기존에 있던 todo의 해당 카테고리 값을 null로 변경 해야함
 }
