@@ -30,4 +30,15 @@ public class UserRequest {
         private String password;
     }
 
+    @Data
+    public static class FindIdByEmailDTO {
+        private String email;
+    }
+
+    @Data
+    public static class FindPasswordByIdAndEmailDTO {
+        private String email;
+        private String username;
+    }
+
 }

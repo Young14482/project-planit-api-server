@@ -25,4 +25,10 @@ public class UserResponse {
             this(user.getId(), user.getUsername());
         }
     }
+
+    record FindIdDTO(Integer id, String username) {
+        FindIdDTO(User user) {
+            this(user.getId(), user.getUsername());
+        }
+    }
 }

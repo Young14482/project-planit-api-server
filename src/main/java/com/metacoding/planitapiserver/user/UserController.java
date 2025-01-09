@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequiredArgsConstructor
 @RestController
 public class UserController {
@@ -46,14 +49,16 @@ public class UserController {
     }
 
     @PostMapping("/find-id")
-    public ResponseEntity<?> findId(@RequestBody String email) {
-        userService.findId(email);
-        return ResponseEntity.ok(ApiUtil.success(null));
+    public ResponseEntity<?> findIDByEmailDTO(@RequestBody UserRequest.FindIdByEmailDTO findIdByEmailDTO) {
+        UserResponse.FindIdDTO findIdDTO = userService.findIDByEmailDTO(findIdByEmailDTO);
+        return ResponseEntity.ok(ApiUtil.success(findIdDTO));
     }
 
-    @PutMapping("/reissue-password")
-    public ResponseEntity<?> findId(@RequestBody String email, @RequestBody String username) {
-        userService.reissuePassword(email, username);
-        return ResponseEntity.ok(ApiUtil.success(null));
+    @PutMapping("/find-password")
+    public ResponseEntity<?> findPassword(@RequestBody UserRequest.FindPasswordByIdAndEmailDTO findPasswordByIdAndEmailDTO) {
+        userService.findPassword(findPasswordByIdAndEmailDTO);
+        Map<String, Object> response = new HashMap<>();
+        response.put("password", "1234");
+        return ResponseEntity.ok(ApiUtil.success(response));
     }
 }
