@@ -15,18 +15,18 @@ import java.util.List;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public TodoResponse.FindAllWithCategoryDTO findAllWithCategory(Integer userId) {
+    public TodoResponse.FindAllWithCategoryDTO findAllWithCategory(User sessionUser) {
         List<Category> categories = List.of(
-                new Category(1, "작업", User.builder().id(1).build()),
-                new Category(2, "생일", User.builder().id(1).build()),
-                new Category(3, "공부", User.builder().id(1).build())
+                new Category(1, "작업", sessionUser),
+                new Category(2, "생일", sessionUser),
+                new Category(3, "공부", sessionUser)
         ); // TODO : category 완성 시 수정
-        List<Todo> todos = todoRepository.findAllByUserId(userId);
+        List<Todo> todos = todoRepository.findAllByUserId(sessionUser.getId());
         return new TodoResponse.FindAllWithCategoryDTO(categories, todos);
     }
 
-    public TodoResponse.FindAllDTO findAll(Integer userId) {
-        List<Todo> todos = todoRepository.findAllByUserId(userId);
+    public TodoResponse.FindAllDTO findAll(User sessionUser) {
+        List<Todo> todos = todoRepository.findAllByUserId(sessionUser.getId());
         return new TodoResponse.FindAllDTO(todos);
     }
 
@@ -36,8 +36,8 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponse.DTO save(Integer userId) {
-        Todo todo = Todo.builder().user(User.builder().id(userId).build()).build();
+    public TodoResponse.DTO save( User sessionUser) {
+        Todo todo = Todo.builder().user(sessionUser).build();
         todoRepository.save(todo);
         return new TodoResponse.DTO(todo);
     }
