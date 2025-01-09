@@ -76,11 +76,25 @@ public class UserService {
     @Transactional
     public void 패스워드수정(int id, UserRequest.PasswordUpdateDTO requestDTO) {
         User userPS = userRepository.findById(id).orElseThrow(
-                ()-> new Exception404("id가 존재하지 않습니다 : "+id)
+                ()-> new Exception404("올바르지 않은 아이디 입니다.")
         );
 
         String encPassword = PasswordUtil.encode(requestDTO.getPassword());
         userPS.updatePassword(encPassword);
     }
 
+    public UserResponse.FindIdDTO findIDByEmailDTO(UserRequest.FindIdByEmailDTO findIdByEmailDTO) {
+        User userPs = userRepository.findByEmail(findIdByEmailDTO.getEmail()).orElseThrow(() -> new Exception404("해당 이메일로 가입한 아이디가 존재하지 않습니다."));
+        return new UserResponse.FindIdDTO(userPs);
+    }
+
+    @Transactional
+    public void findPassword(UserRequest.FindPasswordByIdAndEmailDTO findPasswordByIdAndEmailDTO) {
+        User userPS = userRepository.findByUsernameAndEmail(findPasswordByIdAndEmailDTO.getEmail(),findPasswordByIdAndEmailDTO.getUsername()).orElseThrow(
+                ()-> new Exception404("아이디 또는 이메일이 올바르지 않습니다")
+        );
+
+        String encPassword = PasswordUtil.encode("1234");
+        userPS.updatePassword(encPassword);
+    }
 }
