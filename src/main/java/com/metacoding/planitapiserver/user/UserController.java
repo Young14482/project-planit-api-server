@@ -12,24 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
     private final UserService userService;
-    // TODO 유저 시작안함
-//    @GetMapping("/init/download")
-//    public ResponseEntity<?> initDownload() {
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return ResponseEntity.ok(ApiUtil.success(null));
-//    }
+    // TODO 골조만 만든상태 컨트롤러 구현 해야함
 
-    /**
-     * 클라이언트가 JWT가 존재하면 Authorization에 JWT를 담아서 POST요청
-     * JWT 검증이 완료되면, 사용자 정보 응답
-     * 클라이언트는 사용자 정보로 세션 만들고, 자동 로그인 처리
-     *
-     * JWT 검증 실패 (JWT_NOT_FOUND, JWT_INVALID, JWT_TIMEOUT)
-     */
     @PostMapping("/auto/login")
     public ResponseEntity<?> autoLogin(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization");
@@ -61,6 +45,15 @@ public class UserController {
         return ResponseEntity.ok(ApiUtil.success(null));
     }
 
-    // TODO 아이디찾기 get
-    //  비밀번호 찾기 put >> 확인 후 임시비번 던져주기
+    @PostMapping("/find-id")
+    public ResponseEntity<?> findId(@RequestBody String email) {
+        userService.findId(email);
+        return ResponseEntity.ok(ApiUtil.success(null));
+    }
+
+    @PutMapping("/reissue-password")
+    public ResponseEntity<?> findId(@RequestBody String email, @RequestBody String username) {
+        userService.reissuePassword(email, username);
+        return ResponseEntity.ok(ApiUtil.success(null));
+    }
 }
