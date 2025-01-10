@@ -13,10 +13,10 @@ public class CategoryResponse {
 
     @Data
     public static class DTOList {
-        private List<DTO> dtos;
+        private List<DTO> categories;
 
         public DTOList(List<Category> categories) {
-            this.dtos = categories.stream().map(DTO::new).toList();
+            this.categories = categories.stream().map(DTO::new).toList();
         }
     }
 }
