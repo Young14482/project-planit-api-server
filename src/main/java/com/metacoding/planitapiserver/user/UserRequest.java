@@ -41,4 +41,9 @@ public class UserRequest {
         private String username;
     }
 
+    @Data
+    public static class CheckIdDTO {
+        private String username;
+    }
+
 }

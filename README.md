@@ -192,6 +192,33 @@ Status: 200 OK
 }
 ```
 
+### 7. 아이디 확인
+
+#### Request
+
+URL: /check-id
+
+Method: POST
+
+```json
+{
+	"username" : "test"
+}
+```
+
+#### Response
+
+Status: 200 OK
+
+```json
+{
+  "success" : true,
+  "response" : null,
+  "status" : 200,
+  "errorMessage" : null
+}
+```
+
 ## 2. 투두
 
 ### 1. 카테고리 포함 투두 목록

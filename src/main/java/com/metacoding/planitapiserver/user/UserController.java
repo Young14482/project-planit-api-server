@@ -60,4 +60,10 @@ public class UserController {
         response.put("password", "1234");
         return ResponseEntity.ok(ApiUtil.success(response));
     }
+
+    @PostMapping("/check-id")
+    public ResponseEntity<?> checkId(@RequestBody UserRequest.CheckIdDTO requestDTO) {
+        userService.checkId(requestDTO);
+        return ResponseEntity.ok(ApiUtil.success(null));
+    }
 }
