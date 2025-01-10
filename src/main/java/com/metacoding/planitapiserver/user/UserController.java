@@ -32,8 +32,8 @@ public class UserController {
                 .body(ApiUtil.success(responseDTO));
     }
 
-    @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody UserRequest.JoinDTO requestDTO) {
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody UserRequest.JoinDTO requestDTO) {
         return ResponseEntity.ok(ApiUtil.success(userService.회원가입(requestDTO)));
     }
 
