@@ -9,8 +9,10 @@ public class TodoRequest {
     @Data
     public static class UpdateDTO {
         private String title;
-        private String memo;
         private Integer category;
+        private String memo;
         private LocalDate dueDate;
+        private String repeat;
+        private Boolean isCompleted;
     }
 }

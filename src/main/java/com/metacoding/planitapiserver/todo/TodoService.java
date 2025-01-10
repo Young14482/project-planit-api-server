@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -35,7 +36,7 @@ public class TodoService {
 
     @Transactional
     public TodoResponse.DTO save(User sessionUser) {
-        Todo todo = Todo.builder().user(sessionUser).build();
+        Todo todo = Todo.builder().user(sessionUser).dueDate(LocalDate.now()).build();
         todoRepository.save(todo);
         return new TodoResponse.DTO(todo);
     }
@@ -48,6 +49,14 @@ public class TodoService {
             Category category = categoryRepository.findById(requestDTO.getCategory()).orElseThrow(() -> new Exception404("카테고리를 찾을 수 없습니다."));
             categoryName = category.getName();
         }
+        if (requestDTO.getIsCompleted() != null) {
+            if (requestDTO.getIsCompleted() && !todo.getRepeat().equals("없음")) {
+                Todo nextTodo = todo.nextTodo();
+                System.out.println(nextTodo.getDueDate());
+                todoRepository.save(nextTodo);
+            }
+        }
+
         todo.update(requestDTO, categoryName);
         return new TodoResponse.DTO(todo);
     }

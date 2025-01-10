@@ -1,6 +1,7 @@
 package com.metacoding.planitapiserver.todo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.metacoding.planitapiserver._core.error.exception.Exception400;
 import com.metacoding.planitapiserver.category.Category;
 import com.metacoding.planitapiserver.user.User;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "todo_tb")
 public class Todo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -39,7 +41,6 @@ public class Todo {
     private String memo;
 
     @Column(nullable = false)
-    @CreationTimestamp
     private LocalDate dueDate;
 
     @Column(nullable = false)
@@ -102,6 +103,21 @@ public class Todo {
             this.category = Category.builder().id(dto.getCategory()).name(categoryName).build();
         if (dto.getDueDate() != null)
             this.dueDate = dto.getDueDate();
+        if (dto.getRepeat() != null) {
+            String inputRepeat = dto.getRepeat();
+            if (!(inputRepeat.equals("없음") || inputRepeat.equals("매일") || inputRepeat.equals("매주") || inputRepeat.equals("매월") || inputRepeat.equals("매년"))) {
+                throw new Exception400("잘못된 요청입니다.");
+            }
+            this.repeat = inputRepeat;
+        }
+        if (dto.getIsCompleted() != null) {
+            if (dto.getIsCompleted()) {
+                if (!repeat.equals("없음")) {
+                    repeat = "없음";
+                }
+            }
+            isCompleted = dto.getIsCompleted();
+        }
     }
 
     public void clearCategory() {
@@ -112,4 +128,31 @@ public class Todo {
         isDeleted = true;
     }
 
+    public Todo nextTodo() {
+        LocalDate nextDueDate = null;
+        switch (repeat) {
+            case "매일":
+                nextDueDate = dueDate.plusDays(1);
+                break;
+            case "매주":
+                nextDueDate = dueDate.plusWeeks(1);
+                break;
+            case "매월":
+                nextDueDate = dueDate.plusMonths(1);
+                break;
+            case "매년":
+                nextDueDate = dueDate.plusYears(1);
+                break;
+        }
+        Todo todo = Todo.builder()
+                .title(title)
+                .user(user)
+                .category(category)
+                .memo(memo)
+                .dueDate(nextDueDate)
+                .createdAt(createdAt)
+                .repeat(repeat)
+                .build();
+        return todo;
+    }
 }
