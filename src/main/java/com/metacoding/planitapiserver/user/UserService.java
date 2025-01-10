@@ -97,4 +97,8 @@ public class UserService {
         String encPassword = PasswordUtil.encode("1234");
         userPS.updatePassword(encPassword);
     }
+
+    public void checkId(UserRequest.CheckIdDTO requestDTO) {
+        userRepository.findByUsername(requestDTO.getUsername()).orElseThrow(() -> new Exception404("없는 ID입니다."));
+    }
 }
