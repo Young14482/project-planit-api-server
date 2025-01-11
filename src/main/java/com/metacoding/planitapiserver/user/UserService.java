@@ -78,7 +78,9 @@ public class UserService {
         User userPS = userRepository.findById(id).orElseThrow(
                 ()-> new Exception404("올바르지 않은 아이디 입니다.")
         );
+        System.out.println(requestDTO.getPassword());
 
+        if(!PasswordUtil.verify(requestDTO.getPrev(), userPS.getPassword())) throw new Exception401("패스워드가 일치하지 않습니다");
         String encPassword = PasswordUtil.encode(requestDTO.getPassword());
         userPS.updatePassword(encPassword);
     }

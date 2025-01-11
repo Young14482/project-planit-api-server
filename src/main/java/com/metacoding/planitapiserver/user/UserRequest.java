@@ -27,6 +27,7 @@ public class UserRequest {
 
     @Data
     public static class PasswordUpdateDTO {
+        private String prev;
         private String password;
     }
 
