@@ -430,9 +430,7 @@ Status: 200 OK
 ```json
 {
   "success" : true,
-  "response" : null,
-  "status" : 200,
-  "errorMessage" : {
+  "response" : {
 	  "id" : 1,
 	  "title" : "제목있음",
 	  "category" : {
@@ -445,7 +443,8 @@ Status: 200 OK
 	  "repeat" : "매일",
 	  "isCompleted" : true
   },
-  "isCompleted" : true
+  "status" : 200,
+  "errorMessage" : null
 }
 ```
 
