@@ -115,7 +115,8 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpbWdVcmwiOiIvaW1hZ
 
 ```json
 {
-  "password" : "1234"
+  "prev" : "1234"
+  "password" : "qwer1234"
 }
 ```
 
